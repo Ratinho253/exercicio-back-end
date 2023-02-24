@@ -5,73 +5,117 @@
  * Versão: 1.0
  *********************************************************************************/
 
-var calcularMedia = require('./modulo/media.js')
+// Import para entrada de dados
+var readline = require('readline');
 
-var readline = require('readline')
+var matematica = require('./modulo/media.js');
 
+//objeto para manipular as entradadas de dados
 var entradaDados = readline.createInterface({
-    input : process.stdin,
-    output : process.stdout
-})
+    input: process.stdin,
+    output: process.stdout
+});
 
-entradaDados.question('Digite o nome de seu aluno: \n', function(nomeAluno){
-           let nome1 = nomeAluno
+//nome do aluno
+entradaDados.question('Nome do aluno:\n', function (nomeDoAluno) {
+    let nomeAluno = nomeDoAluno;
 
-    entradaDados.question('Qual sexo: [Masculino | Feminino] \n', function(tipoDeSexo){
-        let tipoSexoAluno = tipoDeSexo
-        // let operacao = tipoDeSexo.toUpperCase()
+    //nome do Professor
+    entradaDados.question('Nome do Professor:\n', function (nomeDoProfessor) {
+        let nomeProfessor = nomeDoProfessor;
 
-       entradaDados.question('Digite o nome do Professor: \n', function(nomeProfessor){
+        //sexo do aluno
+        entradaDados.question('Sexo do aluno FEMININO ou MASCULINO:\n', function (sexoDoAluno) {
+            let sexoAluno = sexoDoAluno;
 
-        let nome2 = nomeProfessor
+            //sexo do Professor
+            entradaDados.question('Sexo do Professor FEMININO ou MASCULINO:\n', function (sexoDoProfessor) {
+                let sexoProfessor = sexoDoProfessor;
 
-            entradaDados.question('Digite o seu sexo: [Masculino | Feminino] \n', function(sexoProfessor){
-                let tipoSexoProfessor = tipoDeSexo
-                // let operacao = sexoProfessor.toUpperCase()
+                //nome do curso
+                entradaDados.question('Nome do curso:\n', function (nomeDoCurso) {
+                    let nomeCurso = nomeDoCurso;
 
-                entradaDados.question('Nome do curso : \n', function(cursoAluno){
-                    let curso = cursoAluno
+                    //nome da disciplina 
+                    entradaDados.question('Nome da Disciplina:\n', function (nomeDaDisciplina) {
+                        let nomeDisciplina = nomeDaDisciplina;
 
-                   entradaDados.question('Nome da disciplina: \n', function(nomeDisciplina){
-                       let disciplina = nomeDisciplina
+                        //nota 1
+                        entradaDados.question('Digite a nota 1 : \n', function (nota1) {
+                            let primeiraNota = nota1.replace(',', '.');
 
-                       entradaDados.question('Nota1 : \n', function(nota1){
-                            let valor1 = nota1.replace(',' , '.')
+                            //nota 2 
+                            entradaDados.question('Digite a nota 2 : \n', function (nota2) {
+                                let segundaNota = nota2.replace(',', '.')
 
-                            entradaDados.question('Nota2 : \n', function(nota2){
-                                let valor2 = nota2.replace(',' , '.')
+                                //nota 3
+                                entradaDados.question('Digite a nota 3 : \n', function (nota3) {
+                                    let terceiraNota = nota3.replace(',', '.')
 
-                                entradaDados.question('Nota3 : \n', function(nota3){
-                                    let valor3 = nota3.replace(',' , '.')
+                                    //nota 4
+                                    entradaDados.question('Digite a nota 4 : \n', function (nota4) {
+                                        let quartaNota = nota4.replace(',', '.')
 
-                                    entradaDados.question('Nota4 : \n', function(nota4){
-                                        let valor4 = nota4.replace(',' , '.')
-                                        let media 
 
-                                        mediaAluno = calcularMedia.mediaAluno(valor1, valor2, valor3, valor4)
+                                        let sexAlu = matematica.sexAl(sexoDoAluno);
+                                        let sexProf = matematica.sexProf(sexoDoProfessor);
 
-                                        if ( mediaAluno >= 50 && mediaAluno <= 69){
-                                            console.log('O aluno precia fazer um exame :')
-                                            entradaDados.question('Digite uma nota do exame : \n', function(notaExame){
-                                               
-                                                
-                                                
-                                            })
+                                        let mediaAluno = matematica.calcularMedia(nota1, nota2, nota3, nota4)
+                                        console.log(mediaAluno);
+                                        // if (sexoDoAluno !== 'feminino' || sexoDoAluno !== 'masculino'){
+                                        //     console.log('ERRO: o sexo do professor(a) ou aluno (a) não forem inseridos corretamente.');
+                                        //     entradaDados.close();
+                                        // }
+
+                                        if (mediaAluno >= 70) {
+                                            console.log(`${sexAlu} ${nomeAluno} foi APROVADO(A) na disciplina ${nomeDisciplina}.`);
+                                            console.log(`Curso: ${nomeCurso}.`);
+                                            console.log(`${sexProf} : ${nomeProfessor}.`);
+                                            console.log(`Notas do aluno:${primeiraNota}, ${segundaNota}, ${terceiraNota}, ${quartaNota}.`);
+                                            console.log(`Média final: ${mediaAluno}.`);
+                                        } else if (mediaAluno <= 49) {
+                                            console.log(`${sexAlu} ${nomeAluno} foi REPROVADO(A) na disciplina ${nomeDisciplina}.`);
+                                            console.log(`Curso: ${nomeCurso}.`);
+                                            console.log(`${sexProf} : ${nomeProfessor}.`);
+                                            console.log(`Notas do aluno: ${primeiraNota}, ${segundaNota}, ${terceiraNota}, ${quartaNota}.`);
+                                            console.log(`Média final: ${mediaAluno}.`);
+
                                         }
-                                        
-                                        
 
-                                        
 
-                                        
-                                    })
-                                })
-                            })
-                        })
-                    })
-                })
-            })  
-        })  
-    })   
-})
+                                        if (mediaAluno >= 50 && mediaAluno <= 69) {
+                                            console.log('O aluno precisa fazer o exame.');
+                                            entradaDados.question('Digite a nota do exame: \n', function (notaDoExame) {
+
+                                                let resultado = matematica.exame(mediaAluno, notaDoExame)
+
+                                                if (resultado <= 59) {
+                                                    console.log(`${sexAlu} ${nomeAluno} foi REPROVADO na disciplina ${nomeDisciplina}.`);
+                                                    console.log(`Curso: ${nomeCurso}.`);
+                                                    console.log(`${sexProf} : ${nomeProfessor}.`);
+                                                    console.log(`Notas do aluno:${primeiraNota}, ${segundaNota}, ${terceiraNota}, ${quartaNota}, ${notaDoExame}.`);
+                                                    console.log(`Média final: ${mediaAluno}.`);
+                                                    console.log(`Média do exame: ${resultado}.`);
+
+                                                } else if (resultado >= 59) {
+                                                    console.log(`${sexAlu} ${nomeAluno} foi APROVADO na disciplina ${nomeDisciplina}.`);
+                                                    console.log(`Curso: ${nomeCurso}.`);
+                                                    console.log(`${sexProf} : ${nomeProfessor}.`);
+                                                    console.log(`Notas do aluno:${primeiraNota}, ${segundaNota}, ${terceiraNota}, ${quartaNota}, ${notaDoExame}.`);
+                                                    console.log(`Média final: ${mediaAluno}.`);
+                                                    console.log(`Média do exame: ${resultado}`);
+                                                }
+
+                                            });
+                                        }
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
+});
 
