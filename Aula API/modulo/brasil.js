@@ -5,10 +5,11 @@
  * Versão: 1.0
  *********************************************************************************/
 
-var listaJson = require('../Json/estados_cidades.js')
+var listaJson = require('./estados_cidades.js')
+ 
 
 
-function getListaEstado() {
+function getListaDeEstados() {
 
 
     let ufListJson = {}
@@ -27,32 +28,42 @@ function getListaEstado() {
 
 }
 
+
 function getDadosEstados(filtro) {
 
     let estadosUf = {}
 
     let local = filtro
 
-    listaJson.estadosCidades.estados.forEach(function (uf) {
+    let status = true
+
+    listaJson.estadosCidades.estados.forEach( function (uf) {
 
         if (local == uf.sigla) {
             estadosUf.uf = uf.sigla
             estadosUf.descricao = uf.nome
             estadosUf.capital = uf.capital
             estadosUf.regiao = uf.regiao
+
+            status = true
         }
     });
-
-    return estadosUf
+         
+    if(status == true) {
+        return estadosUf
+    } else {
+        return false
+    }
 
 }
+
+
 
 function getCapitalEstado(sigla) {
 
     let estados = {}
 
     let local = sigla
-
 
     listaJson.estadosCidades.estados.forEach(function (uf) {
 
@@ -66,6 +77,8 @@ function getCapitalEstado(sigla) {
     return estados
 
 }
+
+
 
 function getEstadosRegiao(regiao) {
 
@@ -92,6 +105,7 @@ function getEstadosRegiao(regiao) {
     }
 
 }
+
 
 function getCapitalPais(capital) {
 
@@ -151,7 +165,16 @@ function getCidades(uf) {
     }
 
 }
-console.log(getCapitalEstado('SP'))
+// console.log(getListaEstado())
+
+module.exports = {
+    getListaDeEstados,
+    getDadosEstados,
+    getCidades,
+    getCapitalEstado,
+    getEstadosRegiao,
+    getCapitalPais
+}
 
 
 
